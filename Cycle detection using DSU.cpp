@@ -37,15 +37,15 @@ int find_set(int a){
 }
 
 void unioni(int a, int b){
-	int m=find_set(a);
-	int n=find_set(b);
+	a=find_set(a);
+	b=find_set(b);
 
-	if (m!=n){
-		if (sz[m]<sz[n]){
+	if (a!=b){
+		if (sz[a]<sz[b])
 			swap(a,b);
-			parent[b]=a;
-			sz[a]+=sz[b];
-		}
+		parent[b]=a;
+		sz[a]+=sz[b];
+		
 	}
 }	
 void solve(){
