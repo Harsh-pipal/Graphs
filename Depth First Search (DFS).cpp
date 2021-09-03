@@ -8,60 +8,65 @@
 #define vi vector<int>
 #define vii vector<ii>
 #define ll long long 
-#define INF 1000000000
+#define INF 1e18
 #define nl '\n'
-#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
 const double PI = 3.141592653589793238460;
 typedef std::complex<double> Complex;
 typedef std::valarray<Complex> CArray;
 using namespace std;
 
-const int N=1e5+2;
+long long binpow(long long a, long long b) {
+    long long res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a;
+        a = a * a;
+        b >>= 1;
+    }
+    return res;
+}
 
-bool visited[N];
-vector<int> adj[N];
+int n,m;
 
+vector<int>adj[1000];
+vector<int>visited(1000,0);
+vector<int>dfsOrder;
 
 void dfs(int node){
-
-	//preorder prints in the top to bottom fashion
-
-	visited[node]=true;
-	cout<<node<<" ";
-
-	//inorder
-
-	for(int i=0;i<adj[node].size();i++){
-		if(visited[adj[node][i]]==false)
-			dfs(adj[node][i]);
-	}
-
-	//post order prints all the nodes which lie at the end point of each path
+    visited[node]=1;
+    dfsOrder.pb(node);
+    for(auto it:adj[node]){
+        if (visited[it]==0)
+            dfs(it);
+    }
 }
 
-void solve(){
-	int nodes,edges;
-	cin>>nodes>>edges;
+void solve(){ 
+        cin>>n>>m;
+    
+    for(int i=0;i<m;i++){
+        int a,b;
+        cin>>a>>b;
+        adj[a].pb(b);
+        adj[b].pb(a);
+    }
+    
+    for(int i=1;i<=n;i++){
+        if(visited[i]==0){
+            dfs(i);
+        }
+    }
+    rep(i,n)cout<<dfsOrder[i]<<" ";
+    cout<<nl;
 
-	for(int i=0;i<=nodes;i++){
-		visited[i]=false;
-	}
-
-	int x,y;
-
-	for(int i=0;i<edges;i++){
-		cin>>x>>y;
-		adj[x].pb(y);
-		adj[y].pb(x);
-	}
-
-	dfs(1);   //root node is given to the function call
-	
-	return 0;
-} 
+}   
+ 
 int main(){
-	int t=1;
-	//cin>>t;
-	while(t--)
-	solve();
-}
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);    
+    cout<<fixed<<setprecision(10);
+    int T=1;
+    //cin>>T;
+    while(T--)
+    solve();
+}       
